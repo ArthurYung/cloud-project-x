@@ -1,0 +1,26 @@
+{
+  "name": "dcm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/bin/cli.js",
+  "bin": "dist/bin/cli.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "dev": "tsc --watch --sourceMap"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/mock-fs": "^4.13.1",
+    "@types/node": "^16.11.12",
+    "jest": "^27.4.4",
+    "mock-fs": "^5.1.2",
+    "ts-jest": "^27.1.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.3"
+  },
+  "dependencies": {
+    "commander": "^8.3.0"
+  }
+}
