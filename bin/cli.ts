@@ -1,21 +1,26 @@
 #!/usr/bin/env node
 import { program } from 'commander';
 import * as packageJson from '../package.json';
+import { commandAdd } from './commands/add';
+import commandStart from './commands/start';
+import { initLocalConfig } from '../lib/local';
+
+initLocalConfig();
 
 program.version(packageJson.version);
 
 program
   .command('start')
   .description('start development cloud manager server')
-  .action((p) => console.log('1', p));
+  .action(commandStart);
 program
   .command('stop')
   .description('stop development cloud manager server')
   .action((p) => console.log('2', p));
 program
-  .command('set <host> [script]')
-  .description('set a projects with proxy hostname and usaged script name')
-  .action((p) => console.log('2', p));
+  .command('add <host> [script]')
+  .description('add a project with proxy hostname and usaged script name')
+  .action(commandAdd);
 program
   .command('del <host>')
   .description('stop development cloud manager server')

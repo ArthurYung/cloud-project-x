@@ -10,6 +10,6 @@ export interface LocalJsonInterface {
 
 export interface LocalProjectConfig {
   host: string;
-  path: string;
+  cwd: string;
   script: string;
 }

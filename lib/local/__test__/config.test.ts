@@ -52,8 +52,8 @@ describe("set config option", () => {
 });
 
 describe("change project settings", () => {
-  const project1 = { host: 'test.qq.com', script: 'dev', path: '/test' }
-  const project2 = { host: 'test2.qq.com', script: 'dev', path: '/test' }
+  const project1 = { host: 'test.qq.com', script: 'dev', cwd: '/test' }
+  const project2 = { host: 'test2.qq.com', script: 'dev', cwd: '/test' }
 
   beforeAll(mockLocalFile)
   afterAll(clearLocalFile)

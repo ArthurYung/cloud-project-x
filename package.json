@@ -1,5 +1,5 @@
 {
-  "name": "dcm",
+  "name": "dpx",
   "version": "1.0.0",
   "description": "",
   "main": "dist/bin/cli.js",
@@ -21,6 +21,7 @@
     "typescript": "^4.5.3"
   },
   "dependencies": {
+    "ansi_up": "^5.1.0",
     "commander": "^8.3.0"
   }
 }
