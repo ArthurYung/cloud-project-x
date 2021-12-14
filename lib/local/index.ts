@@ -1,2 +1,2 @@
-export { initLocalConfig, getLocalConfig, setOption, setProject, removeProject } from './config';
+export * from './config';
 

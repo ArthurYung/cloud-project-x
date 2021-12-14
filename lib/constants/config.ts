@@ -1,9 +1,9 @@
-export const defaultOptions: LocalJsonInterface = {
+export const defaultOptions: LocalJsonInstant = {
   liveTime: 1000 * 60 * 60 * 3,
   projects: {},
 };
 
-export interface LocalJsonInterface {
+export interface LocalJsonInstant {
   liveTime: number;
   projects: {[x: string]: LocalProjectConfig};
 }

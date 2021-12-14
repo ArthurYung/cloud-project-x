@@ -1,9 +1,9 @@
 import { ChildProcess, spawn } from 'child_process';
-import { getLocalConfig } from '../local';
+import { getProject } from '../local';
 import { connections, CONNECTION_STATUS } from './connect';
 
 export function childProject(host: string) {
-  const projectConfig = getLocalConfig().projects[host];
+  const projectConfig = getProject(host);
   if (!projectConfig) {
     console.error(`This project [${host}] is not find`);
     return;

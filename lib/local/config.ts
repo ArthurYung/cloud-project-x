@@ -1,19 +1,20 @@
 import * as fs from 'fs';
 import {
   defaultOptions,
-  LocalJsonInterface,
+  LocalJsonInstant,
   LocalProjectConfig,
 } from '../constants/config';
-import { LOCAL_CONFIG } from '../constants/path';
+import { HOME_DPX_DIR, LOCAL_CONFIG, LOCA_CONFIG_FILENAME } from '../constants/path';
 
-let localConfig: LocalJsonInterface;
+let localConfig = defaultOptions;
+let configWatcher: fs.FSWatcher;
 
-function writeConfigJson(data: LocalJsonInterface) {
-  try {
-    fs.writeFileSync(LOCAL_CONFIG, JSON.stringify(data));
-  } catch (e) {
-    console.error(e, data);
+function writeConfigJson(data: LocalJsonInstant) {
+  if (!fs.existsSync(HOME_DPX_DIR)) {
+    fs.mkdirSync(HOME_DPX_DIR)
   }
+
+  fs.writeFileSync(LOCAL_CONFIG, JSON.stringify(data));
 }
 
 function readConfigJson() {
@@ -25,34 +26,51 @@ function readConfigJson() {
   }
 }
 
-function setOption<T extends keyof Omit<LocalJsonInterface, 'projects'>>(
-  key: T,
-  value: LocalJsonInterface[T]
+export function watchConfigJson() {
+  stopWatcher();
+  
+  configWatcher = fs.watch(LOCAL_CONFIG, (_, filename) => {
+    if (filename === LOCA_CONFIG_FILENAME) {
+      Object.assign(localConfig, readConfigJson());
+    } 
+  });
+}
+
+export function stopWatcher() {
+  configWatcher?.close();
+}
+
+export function updateConfig(
+  update: (config: LocalJsonInstant) => LocalJsonInstant
 ) {
-  localConfig[key] = value;
-  writeConfigJson(localConfig);
+  writeConfigJson(update(localConfig));
 }
 
-function setProject(project: LocalProjectConfig) {
-  localConfig.projects[project.host] = project;
-  writeConfigJson(localConfig);
+export function initConfig() {
+  if (!fs.existsSync(LOCAL_CONFIG)) {
+    updateConfig((config) => config);
+  }
 }
 
-function removeProject(host: string) {
-  delete localConfig.projects[host];
-  writeConfigJson(localConfig);
-}
-
-function getLocalConfig() {
+export function getConfig() {
   return localConfig;
 }
 
-function initLocalConfig() {
-  if (!fs.existsSync(LOCAL_CONFIG)) {
-    writeConfigJson(defaultOptions);
-  }
-
-  localConfig = readConfigJson();
+export function getProject(host: string) {
+  return localConfig.projects[host];
 }
 
-export { initLocalConfig, getLocalConfig, setOption, setProject, removeProject };
+
+export function addProject(project: LocalProjectConfig) {
+  updateConfig((config) => {
+    config.projects[project.host] = project;
+    return config;
+  });
+}
+
+export function delProject(host: string) {
+  updateConfig((config) => {
+    delete config.projects[host];
+    return config;
+  });
+}

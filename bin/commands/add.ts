@@ -1,4 +1,4 @@
-import { setProject } from "../../lib/local";
+import { addProject } from "../../lib/local";
 
 export function commandAdd(host: string, script = 'dev') {
   if (!host) {
@@ -6,6 +6,6 @@ export function commandAdd(host: string, script = 'dev') {
     return;
   }
   
-  setProject({ host, script, cwd: process.cwd() })
+  addProject({ host, script, cwd: process.cwd() })
   console.log(`Add Project [${host}] Success`)
 }

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { program } from 'commander';
+import { initConfig } from '../lib/local';
 import * as packageJson from '../package.json';
 import { commandAdd } from './commands/add';
 import commandStart from './commands/start';
-import { initLocalConfig } from '../lib/local';
 
-initLocalConfig();
+initConfig();
 
 program.version(packageJson.version);
 

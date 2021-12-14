@@ -1,23 +1,24 @@
 import * as fs from 'fs';
-import * as localConfig from '../index';
+import { initConfig, watchConfigJson, stopWatcher, getConfig, updateConfig, getProject, addProject, delProject } from '../index';
 import { LOCAL_CONFIG } from '../../constants/path'
-import { defaultOptions, LocalJsonInterface } from '../../constants/config';
-import { initLocalConfig, removeProject, setOption, setProject } from '../config';
+import { defaultOptions, LocalJsonInstant } from '../../constants/config';
 import * as mock from 'mock-fs';
 
 function mockLocalFile() {
   mock({
     [LOCAL_CONFIG]: JSON.stringify(defaultOptions)
   })
-  initLocalConfig()
+  initConfig();
+  watchConfigJson()
 }
 
 function clearLocalFile() {
   mock.restore();
+  stopWatcher()
 }
 
 
-function getLocalJson(): LocalJsonInterface {
+function getLocalJson(): LocalJsonInstant {
   return JSON.parse(fs.readFileSync(LOCAL_CONFIG, 'utf-8'))
 }
 
@@ -27,7 +28,7 @@ describe("init config file", () => {
   afterAll(clearLocalFile)
 
   test("get default config json", () => {
-    const config = localConfig.getLocalConfig();
+    const config = getConfig();
     expect(config).toMatchObject(defaultOptions);
   });
 
@@ -42,9 +43,12 @@ describe("set config option", () => {
   afterAll(clearLocalFile)
 
   test("set liveTime", () => {
-    setOption('liveTime', 30)
-    const config = localConfig.getLocalConfig();
-    expect(config.liveTime).toBe(30);
+    const config = getConfig();
+    expect(config.liveTime).toBe(1000 * 60 * 60 * 3);
+    updateConfig((config) => {
+      config.liveTime = 30;
+      return config;
+    });
 
     // local config json is modified
     expect(getLocalJson().liveTime).toBe(30);
@@ -59,25 +63,23 @@ describe("change project settings", () => {
   afterAll(clearLocalFile)
 
   test("get project", () => {
-    const config = localConfig.getLocalConfig();
-    expect(config.projects).toMatchObject({})
+    const p1 = getProject(project1.host);
+    const p2 = getProject(project2.host);
+    expect(p1).toBeUndefined()
+    expect(p2).toBeUndefined()
   });
 
   test("set project", () => {
-    setProject(project1)
-    setProject(project2)
-    expect(localConfig.getLocalConfig().projects['test.qq.com']).toMatchObject(project1)
-    expect(localConfig.getLocalConfig().projects['test2.qq.com']).toMatchObject(project2)
+    addProject(project1)
+    addProject(project2)
     // local config json is modified
     expect(getLocalJson().projects['test.qq.com']).toMatchObject(project1)
     expect(getLocalJson().projects['test2.qq.com']).toMatchObject(project2)
   })
 
   test("delete project", () => {
-    removeProject('test.qq.com')
-    expect(localConfig.getLocalConfig().projects['test.qq.com']).toBeUndefined()
-    expect(localConfig.getLocalConfig().projects['test2.qq.com']).toMatchObject(project2)
-
+    delProject('test.qq.com')
+    // local config json is modified
     expect(getLocalJson().projects['test.qq.com']).toBeUndefined()
     expect(getLocalJson().projects['test2.qq.com']).toMatchObject(project2)
   })
