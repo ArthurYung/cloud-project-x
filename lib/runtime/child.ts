@@ -43,5 +43,7 @@ export function childProject(host: string) {
     connection.status = CONNECTION_STATUS.STOP
   })
 
+  // childProcess.on('')
+
   connections.set(host, connection);
 }
