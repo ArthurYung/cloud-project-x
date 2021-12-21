@@ -49,7 +49,11 @@ export function updateConfig(
 export function initConfig() {
   if (!fs.existsSync(LOCAL_CONFIG)) {
     updateConfig((config) => config);
+  } else {
+    localConfig = readConfigJson()
   }
+
+  console.log(localConfig)
 }
 
 export function getConfig() {

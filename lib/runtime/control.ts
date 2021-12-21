@@ -51,6 +51,7 @@ export function proxyControl(
   }
 
   function getConnection() {
+    console.log(connections.size, req.host)
     return connections.get(req.host);
   }
 

@@ -4,6 +4,8 @@ import { initConfig } from '../lib/local';
 import * as packageJson from '../package.json';
 import { commandAdd } from './commands/add';
 import commandStart from './commands/start';
+import * as os from 'os';
+// console.log(os.networkInterfaces())
 
 initConfig();
 

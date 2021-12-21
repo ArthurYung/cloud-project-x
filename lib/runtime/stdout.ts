@@ -31,6 +31,7 @@ export function stdoutPipeRender(
   });
 
   childProcess.stderr.on('data', (buf: Buffer) => {
+    console.log('test buffer error data')
     response.send(ERROR_STDOUT_STYLE);
     response.send(parseStdoutHtml(buf.toString()));
   });

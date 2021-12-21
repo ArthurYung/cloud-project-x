@@ -1,4 +1,4 @@
-import { ChildProcess, spawn } from 'child_process';
+import { ChildProcess, spawn, execSync } from 'child_process';
 import { getProject } from '../local';
 import { connections, CONNECTION_STATUS } from './connect';
 
@@ -27,11 +27,13 @@ export function childProject(host: string) {
   childProcess.on('spawn', () => {
     connection.stime = Date.now()
     console.log('Child process start sucecss');
+    console.log(execSync(`ps -ef | grep ${childProcess.pid}`).toString())
   });
 
 
   childProcess.stderr.on('data', (e: Buffer)=> {
     connection.error += e.toString();
+    console.log(connection.error)
     connection.status = CONNECTION_STATUS.ERROR;
   })
 
@@ -40,10 +42,9 @@ export function childProject(host: string) {
   })
 
   childProcess.on('exit', e => {
-    connection.status = CONNECTION_STATUS.STOP
+    connection.status = CONNECTION_STATUS.STOP;
   })
 
-  // childProcess.on('')
+  connections.set(host, connection)
 
-  connections.set(host, connection);
 }
