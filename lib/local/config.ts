@@ -52,8 +52,6 @@ export function initConfig() {
   } else {
     localConfig = readConfigJson()
   }
-
-  console.log(localConfig)
 }
 
 export function getConfig() {

@@ -4,6 +4,7 @@ import { initConfig } from '../lib/local';
 import * as packageJson from '../package.json';
 import { commandAdd } from './commands/add';
 import commandStart from './commands/start';
+import commandList from './commands/list';
 import * as os from 'os';
 // console.log(os.networkInterfaces())
 
@@ -34,6 +35,6 @@ program
 program
   .command('list')
   .description('display all projects')
-  .action((p) => console.log('2', p));
+  .action(commandList);
 
 program.parse();
