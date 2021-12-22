@@ -51,7 +51,6 @@ export function proxyControl(
   }
 
   function getConnection() {
-    console.log(connections.size, req.host)
     return connections.get(req.host);
   }
 
@@ -69,7 +68,6 @@ export function proxyControl(
   function stdoutRender() {
     const connection = getConnection();
     if (!connection) {
-      console.error('not find xxx');
       res.end();
       return;
     }

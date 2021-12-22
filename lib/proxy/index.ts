@@ -44,8 +44,8 @@ import { routeApi } from "./actions/route-api";
 
 export function requestProxy(request: IncomingMessage, response: ServerResponse) {
   const { use, next } = proxyControl(request, response);
+  use(routeApi);
   use(validateHost);
   use(initConnection);
-  use(routeApi);
   next();
 }

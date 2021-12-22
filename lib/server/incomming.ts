@@ -1,5 +1,5 @@
 import { IncomingMessage } from 'http';
-import { isIpHost, parseApplicationData } from '../util';
+import { isIpHost, isLocalhost, parseApplicationData } from '../util';
 
 export function incomming(request: IncomingMessage) {
   function body(cb: (data: Object | Error) => void) {
@@ -13,10 +13,15 @@ export function incomming(request: IncomingMessage) {
     return isIpHost(request.headers.host);
   }
 
+  function isLocal() {
+    return isLocalhost(request.headers.host)
+  }
+
   return {
     request,
     body,
     isIp,
+    isLocal,
     host: request.headers.host || '127.0.0.1',
     url: request.url || '/',
   };

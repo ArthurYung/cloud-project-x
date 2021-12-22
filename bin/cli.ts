@@ -2,9 +2,10 @@
 import { program } from 'commander';
 import { initConfig } from '../lib/local';
 import * as packageJson from '../package.json';
-import { commandAdd } from './commands/add';
+import commandAdd from './commands/add';
 import commandStart from './commands/start';
 import commandList from './commands/list';
+import commandStop from './commands/stop';
 import * as os from 'os';
 // console.log(os.networkInterfaces())
 
@@ -19,7 +20,7 @@ program
 program
   .command('stop')
   .description('stop development cloud manager server')
-  .action((p) => console.log('2', p));
+  .action(commandStop);
 program
   .command('add <host> [script]')
   .description('add a project with proxy hostname and usaged script name')

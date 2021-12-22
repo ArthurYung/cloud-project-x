@@ -1,5 +1,9 @@
 import { ProxyLifecycle } from '../runtime/control';
 
+function systemStop(context: ProxyLifecycle) {
+  context.res.writeJson({ code: 0 });
+  process.exit(0);
+}
 
 function stdoutCommand(
   context: ProxyLifecycle
@@ -14,5 +18,6 @@ function stdoutCommand(
 }
 
 export const apiRouter = {
+  '/dpx_system_stop': systemStop,
   '/dpx_stdout_command': stdoutCommand,
 };

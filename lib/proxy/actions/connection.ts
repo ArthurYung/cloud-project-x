@@ -3,7 +3,7 @@ import { ProxyLifecycle } from "../../runtime/control";
 
 export function initConnection(context: ProxyLifecycle, next: () => void) {
   const { host } = context.req;
-  const connection = context.getConnection()
+  const connection = context.getConnection();
   if (!connection) {
     childProject(host);
     process.nextTick(() => {
